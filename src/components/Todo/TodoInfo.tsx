@@ -10,7 +10,7 @@ type Props = {
 };
 export const TodoInfo: React.FC<Props> = ({ todo, setTodos, setError }) => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const {title, id, completed} = todo 
   useEffect(() => {
     if (todo.id === 0) {
       setIsLoading(true);
@@ -45,27 +45,28 @@ export const TodoInfo: React.FC<Props> = ({ todo, setTodos, setError }) => {
   };
 
   return (
+    
     <section className="todoapp__main" data-cy="TodoList">
       <div
         data-cy="Todo"
-        className={classNames('todo', { completed: todo.completed })}
+        className={classNames('todo', { 'completed': completed })}
       >
-        <label className="todo__status-label" htmlFor={`todo-${todo.id}`}>
+        <label className="todo__status-label" htmlFor={`todo-${id}`}>
           <input
             data-cy="TodoStatus"
             type="checkbox"
             className="todo__status"
-            id={`todo-${todo.id}`}
-            checked={todo.completed}
+            id={`todo-${id}`}
+            checked={completed}
             onChange={changeComplited}
             aria-label={
-              todo.completed ? 'Mark as incomplete' : 'Mark as complete'
+              completed ? 'Mark as incomplete' : 'Mark as complete'
             }
           />
         </label>
 
         <span data-cy="TodoTitle" className="todo__title">
-          {todo.title}
+          {title}
         </span>
 
         <button

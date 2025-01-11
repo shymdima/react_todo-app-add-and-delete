@@ -6,26 +6,24 @@ import { TodoInfo } from './components/Todo/TodoInfo';
 import { Footer } from './components/Footer/Footer';
 import { Errors } from './components/Errors/Errors';
 import { Header } from './components/Header/Header';
+import { TodoFilter } from './types/TodoFelter';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
-  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
   const [error, setError] = useState('');
-
+  const [filter, setFilter] = useState<TodoFilter>(TodoFilter.All);
   useEffect(() => {
     getTodos()
-      .then(fetchedTodos => {
-        setTodos(fetchedTodos);
-      })
+      .then(setTodos)
       .catch(() => setError('Unable to load todos'));
   }, []);
 
   const filteredTodos = todos.filter(todo => {
     switch (filter) {
-      case 'active':
+      case TodoFilter.Active:
         return !todo.completed;
-      case 'completed':
+      case TodoFilter.Completed:
         return todo.completed;
       default:
         return true;
@@ -63,7 +61,8 @@ export const App: React.FC = () => {
             setTodos={setTodos}
             setError={setError}
             key={tempTodo.id}
-          />)}
+          />
+        )}
 
         {todos.length > 0 && (
           <Footer
